@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finanças da Família</title>
+<meta name="theme-color" content="#007276">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Família">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="icone-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#007276;--teal-dark:#005F62;--teal-deeper:#004448;--teal-tint:#E0F2F3;
+  --gold:#FFC000;--gold-tint:#FFF4CC;
+  --white:#FFFFFF;--offwhite:#FAFAF7;--hairline:#ECECEC;--divider:#E5E5E5;--mute:#BFBFBF;
+  --ink-3:#8A8A8A;--ink-2:#555555;--ink-1:#1A1A1A;
+  --ok:#2F7D4F;--warn:#D97706;--bad:#B42318;
+  --shadow:0 2px 8px rgba(0,0,0,.06);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--offwhite);color:var(--ink-1);font-family:'Montserrat',system-ui,sans-serif;font-size:15px}
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+button,input,select{font-family:inherit;font-size:15px}
+header{position:sticky;top:0;z-index:5;background:var(--teal);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 16px 12px;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:12px}
+header h1{font-size:17px;font-weight:700;margin:0;flex:1;letter-spacing:-.2px}
+header .sub{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+header button{background:transparent;border:1px solid rgba(255,255,255,.5);color:#fff;border-radius:8px;padding:6px 10px;font-size:13px;font-weight:600}
+main{max-width:720px;margin:0 auto;padding:16px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:20px 0 8px}
+.card{background:var(--white);border:1px solid var(--hairline);border-radius:16px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px}
+.destaque{border-left:4px solid var(--teal);background:var(--teal-tint);border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.atencao{border-left:4px solid var(--gold);background:var(--gold-tint);border-radius:12px;padding:14px 16px;margin-bottom:12px;color:var(--ink-1)}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.kpi .rot{font-size:12px;color:var(--ink-3);font-weight:600}
+.kpi .val{font-size:22px;font-weight:800;color:var(--teal-deeper);margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi .det{font-size:12px;color:var(--ink-2);margin-top:2px}
+.linha{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--divider)}
+.linha:last-child{border-bottom:0}
+.linha .txt{flex:1;min-width:0}
+.linha .t1{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linha .t2{font-size:12px;color:var(--ink-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.linha .v{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.v.entra{color:var(--ok)}
+.clic{cursor:pointer}
+.pill{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;background:var(--teal-tint);color:var(--teal-deeper)}
+.pill.rev{background:var(--gold-tint);color:var(--ink-1)}
+.badge{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;border-radius:999px;background:var(--gold);color:var(--ink-1);font-size:12px;font-weight:800;padding:0 6px}
+.barra{height:8px;background:var(--hairline);border-radius:999px;overflow:hidden;margin-top:6px}
+.barra i{display:block;height:100%;background:var(--teal);border-radius:999px}
+.barra i.alto{background:var(--warn)}
+.barra i.estouro{background:var(--bad)}
+.cat-top{display:flex;justify-content:space-between;gap:8px;font-size:14px}
+.cat-top b{font-weight:600}
+.cat-top span{color:var(--ink-2);font-variant-numeric:tabular-nums;font-size:13px}
+.mesnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.mesnav b{font-size:16px;font-weight:700;color:var(--teal-deeper)}
+.mesnav button,.seg button{background:var(--white);border:1px solid var(--hairline);border-radius:8px;padding:8px 12px;font-weight:600;color:var(--teal)}
+.seg{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.seg button.on{background:var(--teal);color:#fff;border-color:var(--teal)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{font-size:11px;font-weight:600;color:var(--ink-3);text-align:center;padding:4px 0}
+.cal .dia{background:var(--white);border:1px solid var(--hairline);border-radius:8px;min-height:58px;padding:4px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
+.cal .dia.vazio{background:transparent;border:0;cursor:default}
+.cal .dia .n{font-size:12px;font-weight:600;color:var(--ink-2)}
+.cal .dia .s{font-size:10px;font-weight:700;color:var(--teal-deeper);text-align:right;font-variant-numeric:tabular-nums;line-height:1.1}
+.cal .dia.hoje{border:2px solid var(--gold)}
+.cal .dia.sel{background:var(--teal-tint);border-color:var(--teal)}
+.cal .dia.forte{background:var(--teal);}
+.cal .dia.forte .n,.cal .dia.forte .s{color:#fff}
+.col-chart{display:flex;align-items:flex-end;gap:8px;height:140px;padding-top:8px}
+.col-chart .c{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.col-chart .c i{display:block;width:100%;max-width:42px;background:var(--teal);border-radius:6px 6px 0 0}
+.col-chart .c.atual i{background:var(--teal-deeper)}
+.col-chart .c small{font-size:10px;color:var(--ink-3);font-weight:600;text-transform:capitalize}
+.col-chart .c em{font-style:normal;font-size:10px;color:var(--ink-2);font-weight:600}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--hairline);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:6}
+nav.tabs button{flex:1;background:none;border:0;padding:6px 2px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-3);font-size:10.5px;font-weight:600}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;stroke-width:1.75;fill:none}
+nav.tabs button.on{color:var(--teal)}
+.btn{background:var(--teal);color:#fff;border:0;border-radius:8px;padding:12px 18px;font-weight:600;width:100%}
+.btn:active{background:var(--teal-dark)}
+.btn.sec{background:var(--white);color:var(--teal);border:1px solid var(--teal)}
+label{display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin:12px 0 6px}
+input[type=text],input[type=email],input[type=password],input[type=number],select{width:100%;padding:11px 12px;border:1px solid var(--divider);border-radius:8px;background:#fff;color:var(--ink-1)}
+input:focus,select:focus{outline:2px solid var(--teal);border-color:var(--teal)}
+.check{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:14px}
+.check input{width:20px;height:20px;accent-color:var(--teal)}
+.vazio-msg{text-align:center;color:var(--ink-3);padding:24px 8px;font-size:14px}
+.fundo{position:fixed;inset:0;background:rgba(26,26,26,.4);z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.folha{background:#fff;width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto}
+.folha h3{margin:0 0 4px;font-size:18px;color:var(--teal-deeper)}
+.folha .meta{font-size:13px;color:var(--ink-2);margin-bottom:6px}
+.acoes{display:flex;gap:8px;margin-top:16px}
+.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--teal-deeper);color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;font-weight:600;z-index:20;box-shadow:var(--shadow)}
+.login{max-width:380px;margin:12vh auto 0;padding:16px}
+.login h2{font-size:26px;font-weight:800;color:var(--teal-deeper);margin:6px 0 4px}
+.login p{color:var(--ink-2);margin:0 0 12px}
+.erro{color:var(--bad);font-size:13px;margin-top:10px;font-weight:600}
+.dois{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pequeno{font-size:12px;color:var(--ink-3)}
+@media (min-width:600px){.kpis{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+'use strict';
+const API = 'https://mediumblue-shark-563200.hostingersite.com/webhook/familia-api';
+const FORA_DO_GASTO = ['Empresa — reembolsar', 'Repasse ao CNPJ do Nikolas'];
+const INICIO_DADOS = '2026-07'; // antes disso só existem parcelas de compras antigas
+const st = { token: ler('fam_token'), nome: ler('fam_nome'), d: null, aba: 'hoje', mes: mesDe(new Date()), quem: 'todos', diaSel: null, catSel: null };
+
+function ler(k){ try { return localStorage.getItem(k) || ''; } catch(e){ return ''; } }
+function gravar(k, v){ try { v ? localStorage.setItem(k, v) : localStorage.removeItem(k); } catch(e){} }
+function mesDe(dt){ return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0'); }
+function hojeISO(){ const d = new Date(); return mesDe(d) + '-' + String(d.getDate()).padStart(2, '0'); }
+function somaMes(ym, n){ const [y, m] = ym.split('-').map(Number); const t = y * 12 + (m - 1) + n; return Math.floor(t / 12) + '-' + String(t % 12 + 1).padStart(2, '0'); }
+function nomeMes(ym, curto){ const [y, m] = ym.split('-').map(Number); const s = new Date(y, m - 1, 1).toLocaleDateString('pt-BR', curto ? { month: 'short' } : { month: 'long', year: 'numeric' }).replace('.', ''); return s.charAt(0).toUpperCase() + s.slice(1); }
+function brl(v){ return (v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+function brlCurto(v){ v = v || 0; if (Math.abs(v) >= 1000) return (v / 1000).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + 'k'; return Math.round(v).toString(); }
+function dataBR(iso){ const [y, m, d] = iso.split('-'); return d + '/' + m; }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function toast(msg){ const t = document.createElement('div'); t.className = 'toast'; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+
+async function api(corpo){
+  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.assign({ token: st.token }, corpo)) });
+  const j = await r.json().catch(() => ({ ok: false }));
+  if (r.status === 401 || j.erro === 'login') { sair(); throw new Error('login'); }
+  return j;
+}
+
+async function carregar(silencioso){
+  if (!silencioso && !st.d) render();
+  try {
+    const j = await api({ acao: 'dados' });
+    if (j.ok) { st.d = j; st.nome = j.nome; gravar('fam_nome', j.nome); try { localStorage.setItem('fam_cache', JSON.stringify(j)); } catch(e){} render(); }
+  } catch(e){ if (e.message !== 'login' && !st.d) { document.getElementById('app').innerHTML = cabecalho() + '<main><div class="atencao">Sem conexão com o servidor. Tente novamente em instantes.</div></main>'; } }
+}
+
+function sair(){ st.token = ''; st.d = null; gravar('fam_token', ''); gravar('fam_nome', ''); try { localStorage.removeItem('fam_cache'); } catch(e){} render(); }
+
+// ---------- dados derivados ----------
+function visiveis(){ return (st.d ? st.d.lancamentos : []).filter(l => l.tipo !== 'interna' && (st.quem === 'todos' || l.quem === st.quem)); }
+function gastos(){ return visiveis().filter(l => l.tipo === 'saida' && !FORA_DO_GASTO.includes(l.categoria)); }
+function entradas(){ return visiveis().filter(l => l.tipo === 'entrada'); }
+function soma(ls){ return ls.reduce((s, l) => s + (Number(l.valor) || 0), 0); }
+function categorias(){ return st.d ? st.d.categorias : []; }
+function cat(nome){ return categorias().find(c => c.nome === nome) || { nome: nome, orcamento: 0, no_orcamento: false }; }
+function orcamentoTotal(){ return categorias().filter(c => c.no_orcamento).reduce((s, c) => s + (Number(c.orcamento) || 0), 0); }
+function aRevisar(){ return (st.d ? st.d.lancamentos : []).filter(l => l.status === 'a_revisar' && l.tipo !== 'interna'); }
+function porCategoria(ls){ const m = {}; ls.forEach(l => { m[l.categoria] = (m[l.categoria] || 0) + Number(l.valor || 0); }); return Object.entries(m).sort((a, b) => b[1] - a[1]); }
+
+// ---------- telas ----------
+const ICONES = {
+  hoje: '<svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5V21H3z"/><path d="M9 21v-6h6v6"/></svg>',
+  calendario: '<svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+  ondevai: '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg>',
+  apagar: '<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/></svg>',
+  mais: '<svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/></svg>'
+};
+const ABAS = [['hoje', 'Hoje'], ['calendario', 'Calendário'], ['ondevai', 'Para onde vai'], ['apagar', 'A pagar'], ['mais', 'Mais']];
+
+function cabecalho(){
+  return '<header><div style="flex:1"><div class="sub">Finanças da Família</div><h1>' + (st.nome ? 'Olá, ' + esc(st.nome) : 'Família') + '</h1></div>' +
+    (st.token ? '<button onclick="carregar()">Atualizar</button>' : '') + '</header>';
+}
+function abas(){
+  return '<nav class="tabs">' + ABAS.map(([k, t]) => '<button class="' + (st.aba === k || (k === 'mais' && ['mais', 'revisar', 'orcamento', 'metas', 'regras', 'entradas'].includes(st.aba)) ? 'on' : '') + '" onclick="ir(\'' + k + '\')">' + ICONES[k] + t + '</button>').join('') + '</nav>';
+}
+function ir(aba){ st.aba = aba; st.diaSel = null; st.catSel = null; render(); window.scrollTo(0, 0); }
+
+function seletorMes(){
+  return '<div class="mesnav"><button onclick="st.mes=somaMes(st.mes,-1);render()">‹</button><b>' + nomeMes(st.mes) + '</b><button onclick="st.mes=somaMes(st.mes,1);render()">›</button></div>';
+}
+function seletorQuem(){
+  return '<div class="seg">' + [['todos', 'Família'], ['Nikolas', 'Nikolas'], ['Daiane', 'Daiane']].map(([k, t]) => '<button class="' + (st.quem === k ? 'on' : '') + '" onclick="st.quem=\'' + k + '\';render()">' + t + '</button>').join('') + '</div>';
+}
+function itemLanc(l, mostrarData){
+  const ent = l.tipo === 'entrada';
+  const parc = Number(l.parcelas) > 1 ? ' · ' + l.parcelas + 'x de ' + brl(l.valor_parcela) : '';
+  return '<div class="linha clic" onclick="abrirLanc(\'' + esc(l.id_tx) + '\')"><div class="txt"><div class="t1">' + esc(limpaDesc(l.descricao)) + '</div><div class="t2">' +
+    (mostrarData ? dataBR(l.data) + ' · ' : '') + esc(l.categoria) + ' · ' + esc(l.quem) + ', ' + esc(l.conta) + parc + '</div></div>' +
+    (l.status === 'a_revisar' ? '<span class="pill rev">revisar</span>' : '') + '<div class="v ' + (ent ? 'entra' : '') + '">' + (ent ? '+ ' : '') + brl(l.valor) + '</div></div>';
+}
+function limpaDesc(s){ return String(s || '').replace(/^(PIX - (ENVIADO|RECEBIDO)|PAG BOLETO|TRANSF (ENVIADA|RECEBIDA)|PGTO|TED)\s+/i, '').replace(/^\d{2}\/\d{2}\s+\d{2}:\d{2}\s+/, '').replace(/\s{2,}/g, ' ').trim(); }
+
+function telaHoje(){
+  const hoje = hojeISO(), mes = mesDe(new Date());
+  const g = gastos(), doDia = g.filter(l => l.data === hoje), doMes = g.filter(l => l.mes === mes);
+  const gMes = soma(doMes), orc = orcamentoTotal(), ent = soma(entradas().filter(l => l.mes === mes));
+  const diasMes = new Date(+mes.slice(0, 4), +mes.slice(5, 7), 0).getDate(), diaHoje = new Date().getDate();
+  const ritmo = gMes / Math.max(diaHoje, 1) * diasMes;
+  const rev = aRevisar().length;
+  const alertas = porCategoria(doMes.filter(l => cat(l.categoria).no_orcamento)).filter(([c, v]) => cat(c).orcamento > 0 && v / cat(c).orcamento >= 0.9);
+  let h = seletorQuem();
+  h += '<div class="kpis"><div class="card kpi"><div class="rot">Gasto hoje</div><div class="val">' + brl(soma(doDia)) + '</div><div class="det">' + doDia.length + ' lançamento(s)</div></div>' +
+    '<div class="card kpi"><div class="rot">Gasto no mês</div><div class="val">' + brl(gMes) + '</div><div class="det">de ' + brl(orc) + ' orçados</div></div>' +
+    '<div class="card kpi"><div class="rot">Restante do orçamento</div><div class="val" style="color:' + (orc - gMes < 0 ? 'var(--bad)' : 'var(--teal-deeper)') + '">' + brl(orc - gMes) + '</div><div class="det">ritmo projeta ' + brl(ritmo) + '</div></div>' +
+    '<div class="card kpi"><div class="rot">Entradas no mês</div><div class="val">' + brl(ent) + '</div><div class="det">saldo do mês ' + brl(ent - gMes) + '</div></div></div>';
+  if (rev) h += '<div class="atencao clic" onclick="ir(\'revisar\')"><b><span class="badge">' + rev + '</span> lançamento(s) para revisar</b><div class="pequeno" style="color:var(--ink-2);margin-top:4px">Classifique uma vez e marque "lembrar sempre": os próximos parecidos entram sozinhos.</div></div>';
+  alertas.forEach(([c, v]) => { h += '<div class="atencao">⚠ <b>' + esc(c) + '</b> já usou ' + Math.round(v / cat(c).orcamento * 100) + '% do orçamento (' + brl(v) + ' de ' + brl(cat(c).orcamento) + ').</div>'; });
+  h += '<div class="eyebrow">Hoje, ' + dataBR(hoje) + '</div><div class="card">' + (doDia.length ? doDia.map(l => itemLanc(l)).join('') : '<div class="vazio-msg">Nenhum gasto registrado hoje até agora. Os bancos podem levar algumas horas para mostrar as compras.</div>') + '</div>';
+  const ult = g.filter(l => l.data < hoje).sort((a, b) => b.data.localeCompare(a.data)).slice(0, 8);
+  if (ult.length) h += '<div class="eyebrow">Últimos gastos</div><div class="card">' + ult.map(l => itemLanc(l, true)).join('') + '</div>';
+  return h;
+}
+
+function telaCalendario(){
+  const g = gastos().filter(l => l.mes === st.mes);
+  const porDia = {}; g.forEach(l => { porDia[l.data] = (porDia[l.data] || 0) + Number(l.valor || 0); });
+  const [y, m] = st.mes.split('-').map(Number);
+  const primeiro = new Date(y, m - 1, 1).getDay(), dias = new Date(y, m, 0).getDate(), hoje = hojeISO();
+  const max = Math.max(1, ...Object.values(porDia));
+  let h = seletorQuem() + seletorMes();
+  h += '<div class="destaque"><b>' + brl(soma(g)) + '</b> gastos em ' + nomeMes(st.mes) + ' por competência. Compra parcelada aparece pelo valor total no dia da compra.</div>';
+  h += '<div class="cal">' + ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(d => '<div class="dow">' + d + '</div>').join('');
+  for (let i = 0; i < primeiro; i++) h += '<div class="dia vazio"></div>';
+  for (let d = 1; d <= dias; d++){
+    const iso = st.mes + '-' + String(d).padStart(2, '0'), v = porDia[iso] || 0;
+    const cls = ['dia', iso === hoje ? 'hoje' : '', st.diaSel === iso ? 'sel' : '', v > max * 0.6 && st.diaSel !== iso ? 'forte' : ''].join(' ');
+    h += '<div class="' + cls + '" onclick="st.diaSel=\'' + iso + '\';render()"><span class="n">' + d + '</span><span class="s">' + (v ? brlCurto(v) : '') + '</span></div>';
+  }
+  h += '</div>';
+  if (st.diaSel){
+    const ls = g.filter(l => l.data === st.diaSel).sort((a, b) => b.valor - a.valor);
+    h += '<div class="eyebrow">' + dataBR(st.diaSel) + ' · ' + brl(soma(ls)) + '</div><div class="card">' + (ls.length ? ls.map(l => itemLanc(l)).join('') : '<div class="vazio-msg">Sem gastos neste dia.</div>') + '</div>';
+  }
+  return h;
+}
+
+function telaOndeVai(){
+  const g = gastos(), doMes = g.filter(l => l.mes === st.mes), total = soma(doMes);
+  let h = seletorQuem() + seletorMes();
+  const meses = []; for (let i = 5; i >= 0; i--) { const m = somaMes(st.mes, -i); if (m >= INICIO_DADOS) meses.push(m); }
+  const tots = meses.map(m => soma(g.filter(l => l.mes === m))), mx = Math.max(1, ...tots);
+  h += '<div class="card"><div class="cat-top"><b>Evolução do gasto</b><span>desde jul/2026</span></div><div class="col-chart">' +
+    meses.map((m, i) => '<div class="c ' + (m === st.mes ? 'atual' : '') + '"><em>' + brlCurto(tots[i]) + '</em><i style="height:' + Math.max(2, tots[i] / mx * 100) + '%"></i><small>' + nomeMes(m, true) + '</small></div>').join('') + '</div></div>';
+  h += '<div class="eyebrow">' + brl(total) + ' por categoria</div><div class="card">';
+  const cats = porCategoria(doMes);
+  if (!cats.length) h += '<div class="vazio-msg">Sem gastos neste mês.</div>';
+  cats.forEach(([c, v]) => {
+    const o = Number(cat(c).orcamento) || 0, p = o ? v / o : 0;
+    h += '<div class="linha clic" style="display:block" onclick="st.catSel=st.catSel===\'' + esc(c) + '\'?null:\'' + esc(c) + '\';render()"><div class="cat-top"><b>' + esc(c) + '</b><span>' + brl(v) + (o ? ' de ' + brl(o) : '') + ' · ' + Math.round(v / (total || 1) * 100) + '%</span></div>' +
+      '<div class="barra"><i class="' + (p > 1 ? 'estouro' : p >= 0.9 ? 'alto' : '') + '" style="width:' + Math.min(100, o ? p * 100 : v / (cats[0][1] || 1) * 100) + '%"></i></div></div>';
+    if (st.catSel === c) h += doMes.filter(l => l.categoria === c).sort((a, b) => b.valor - a.valor).map(l => itemLanc(l, true)).join('');
+  });
+  h += '</div>';
+  const fora = visiveis().filter(l => l.tipo === 'saida' && FORA_DO_GASTO.includes(l.categoria) && l.mes === st.mes);
+  if (fora.length) h += '<div class="eyebrow">Fora do orçamento da família</div><div class="card">' + porCategoria(fora).map(([c, v]) => '<div class="linha"><div class="txt"><div class="t1">' + esc(c) + '</div></div><div class="v">' + brl(v) + '</div></div>').join('') + '</div>';
+  const ent = entradas().filter(l => l.mes === st.mes);
+  h += '<div class="eyebrow">Entradas · ' + brl(soma(ent)) + '</div><div class="card">' + (ent.length ? porCategoria(ent).map(([c, v]) => '<div class="linha"><div class="txt"><div class="t1">' + esc(c) + '</div></div><div class="v entra">+ ' + brl(v) + '</div></div>').join('') : '<div class="vazio-msg">Sem entradas neste mês.</div>') + '</div>';
+  return h;
+}
+
+function telaAPagar(){
+  const atual = mesDe(new Date());
+  const ps = (st.d ? st.d.parcelas : []).filter(p => p.mes_fatura >= atual);
+  const meses = {}; ps.forEach(p => { (meses[p.mes_fatura] = meses[p.mes_fatura] || []).push(p); });
+  const chaves = Object.keys(meses).sort();
+  let h = '<div class="destaque">Parcelas de compras já feitas que ainda vão cair nas faturas. Total comprometido: <b>' + brl(ps.reduce((s, p) => s + Number(p.valor || 0), 0)) + '</b>.</div>';
+  if (!chaves.length) h += '<div class="card"><div class="vazio-msg">Nenhuma parcela futura.</div></div>';
+  chaves.forEach(m => {
+    const tot = meses[m].reduce((s, p) => s + Number(p.valor || 0), 0);
+    h += '<div class="eyebrow">' + nomeMes(m) + ' · ' + brl(tot) + '</div><div class="card">' + meses[m].sort((a, b) => b.valor - a.valor).map(p =>
+      '<div class="linha"><div class="txt"><div class="t1">' + esc(p.descricao) + '</div><div class="t2">Parcela ' + p.numero + ' de ' + p.total + ' · ' + esc(p.conta) + ' · ' + esc(p.categoria) + '</div></div><div class="v">' + brl(p.valor) + '</div></div>').join('') + '</div>';
+  });
+  return h;
+}
+
+function telaMais(){
+  const rev = aRevisar().length;
+  const item = (aba, t, d, extra) => '<div class="linha clic" onclick="ir(\'' + aba + '\')"><div class="txt"><div class="t1">' + t + '</div><div class="t2">' + d + '</div></div>' + (extra || '') + '<span style="color:var(--teal);font-weight:700">›</span></div>';
+  return '<div class="card">' + item('revisar', 'Lançamentos para revisar', 'Classifique e ensine o sistema', rev ? '<span class="badge">' + rev + '</span>' : '') +
+    item('orcamento', 'Orçamento por categoria', 'Defina o teto mensal de cada grupo') +
+    item('metas', 'Metas e patrimônio', 'Saldos das contas e objetivos da família') +
+    item('regras', 'Regras de classificação', 'O que o sistema já aprendeu') + '</div>' +
+    '<div class="card"><div class="pequeno">Conectado como <b>' + esc(st.nome) + '</b>. Os dados são atualizados todo dia às 06:50 e às 21:00.</div><div class="acoes"><button class="btn sec" onclick="sair()">Sair</button></div></div>';
+}
+
+function telaRevisar(){
+  const ls = aRevisar().sort((a, b) => b.data.localeCompare(a.data));
+  let h = '<div class="destaque">Toque em cada lançamento para escolher a categoria. Com <b>lembrar sempre</b>, os próximos parecidos já entram classificados.</div>';
+  h += '<div class="card">' + (ls.length ? ls.map(l => itemLanc(l, true)).join('') : '<div class="vazio-msg">✓ Tudo classificado.</div>') + '</div>';
+  return h;
+}
+
+function telaOrcamento(){
+  const mes = mesDe(new Date()), g = gastos().filter(l => l.mes === mes);
+  const real = {}; g.forEach(l => { real[l.categoria] = (real[l.categoria] || 0) + Number(l.valor || 0); });
+  let h = '<div class="destaque">Orçamento mensal total: <b>' + brl(orcamentoTotal()) + '</b>. Valores sugeridos pela média de jul–set; ajuste à vontade.</div><div class="card">';
+  categorias().filter(c => c.no_orcamento).forEach(c => {
+    const r = real[c.nome] || 0, o = Number(c.orcamento) || 0, p = o ? r / o : 0;
+    h += '<div class="linha" style="display:block"><div class="cat-top"><b>' + esc(c.nome) + '</b><span>' + brl(r) + ' no mês</span></div>' +
+      '<div class="barra"><i class="' + (p > 1 ? 'estouro' : p >= 0.9 ? 'alto' : '') + '" style="width:' + Math.min(100, p * 100) + '%"></i></div>' +
+      '<div style="display:flex;gap:8px;margin-top:8px"><input type="number" inputmode="decimal" id="orc-' + c.id + '" value="' + o + '"><button class="btn" style="width:auto" onclick="salvarOrc(' + c.id + ',\'' + esc(c.nome) + '\')">Salvar</button></div></div>';
+  });
+  return h + '</div>';
+}
+async function salvarOrc(id, nome){
+  const v = Number(document.getElementById('orc-' + id).value) || 0;
+  await api({ acao: 'orcamento', nome: nome, orcamento: v });
+  categorias().find(c => c.id === id).orcamento = v; toast('Orçamento salvo'); render();
+}
+
+function telaMetas(){
+  const s = st.d ? st.d.saldos : [];
+  const contas = s.filter(x => x.tipo === 'BANK'), cartoes = s.filter(x => x.tipo === 'CARD');
+  const liq = contas.reduce((a, x) => a + Number(x.saldo || 0), 0), divCart = cartoes.reduce((a, x) => a + Number(x.saldo || 0), 0);
+  let h = '<div class="kpis"><div class="card kpi"><div class="rot">Saldo em contas</div><div class="val">' + brl(liq) + '</div></div><div class="card kpi"><div class="rot">Faturas de cartão</div><div class="val" style="color:var(--bad)">' + brl(divCart) + '</div></div></div>';
+  h += '<div class="eyebrow">Contas e cartões' + (s[0] ? ' · ' + dataBR(s[0].data) : '') + '</div><div class="card">' + s.sort((a, b) => a.quem.localeCompare(b.quem) || a.conta.localeCompare(b.conta)).map(x =>
+    '<div class="linha"><div class="txt"><div class="t1">' + esc(x.conta) + '</div><div class="t2">' + esc(x.quem) + '</div></div><div class="v" style="color:' + (x.saldo < 0 ? 'var(--bad)' : 'var(--ink-1)') + '">' + brl(x.saldo) + '</div></div>').join('') + '</div>';
+  const metas = st.d ? st.d.metas : [];
+  h += '<div class="eyebrow">Metas da família</div><div class="card">' + (metas.length ? metas.map(m => {
+    const p = m.alvo ? m.atual / m.alvo : 0;
+    return '<div class="linha clic" style="display:block" onclick="editarMeta(\'' + esc(m.nome) + '\')"><div class="cat-top"><b>' + esc(m.nome) + '</b><span>' + brl(m.atual) + ' de ' + brl(m.alvo) + (m.prazo ? ' · até ' + esc(m.prazo) : '') + '</span></div><div class="barra"><i style="width:' + Math.min(100, p * 100) + '%"></i></div></div>';
+  }).join('') : '<div class="vazio-msg">Nenhuma meta ainda.</div>') + '<div class="acoes"><button class="btn" onclick="editarMeta()">Nova meta</button></div></div>';
+  return h;
+}
+function editarMeta(nome){
+  const m = (st.d.metas || []).find(x => x.nome === nome) || { nome: '', alvo: '', prazo: '', atual: '' };
+  folha('<h3>' + (nome ? 'Editar meta' : 'Nova meta') + '</h3><label>Nome</label><input type="text" id="m-nome" value="' + esc(m.nome) + '" ' + (nome ? 'readonly' : '') + ' placeholder="Ex.: Reserva de emergência">' +
+    '<div class="dois"><div><label>Valor alvo (R$)</label><input type="number" inputmode="decimal" id="m-alvo" value="' + esc(m.alvo) + '"></div><div><label>Já guardado (R$)</label><input type="number" inputmode="decimal" id="m-atual" value="' + esc(m.atual) + '"></div></div>' +
+    '<label>Prazo (mês/ano)</label><input type="text" id="m-prazo" value="' + esc(m.prazo) + '" placeholder="12/2027">' +
+    '<div class="acoes">' + (nome ? '<button class="btn sec" onclick="excluirMeta(\'' + esc(nome) + '\')">Excluir</button>' : '') + '<button class="btn" onclick="salvarMeta()">Salvar</button></div>');
+}
+async function salvarMeta(){
+  const m = { nome: document.getElementById('m-nome').value.trim(), alvo: Number(document.getElementById('m-alvo').value) || 0, atual: Number(document.getElementById('m-atual').value) || 0, prazo: document.getElementById('m-prazo').value.trim() };
+  if (!m.nome) return toast('Dê um nome à meta');
+  await api(Object.assign({ acao: 'meta' }, m));
+  st.d.metas = (st.d.metas || []).filter(x => x.nome !== m.nome).concat([m]); fecharFolha(); toast('Meta salva'); render();
+}
+async function excluirMeta(nome){
+  await api({ acao: 'excluir_meta', nome: nome });
+  st.d.metas = st.d.metas.filter(x => x.nome !== nome); fecharFolha(); render();
+}
+
+function telaRegras(){
+  const rs = st.d ? st.d.regras : [];
+  return '<div class="destaque">Regras criadas quando vocês marcam "lembrar sempre". Elas valem para os lançamentos novos e para os parecidos que ainda não foram revisados.</div><div class="card">' +
+    (rs.length ? rs.map(r => '<div class="linha"><div class="txt"><div class="t1">' + esc(r.padrao) + '</div><div class="t2">→ ' + esc(r.categoria) + ' · por ' + esc(r.criada_por) + '</div></div><button class="btn sec" style="width:auto;padding:6px 10px" onclick="excluirRegra(' + r.id + ')">Excluir</button></div>').join('') : '<div class="vazio-msg">Nenhuma regra ainda.</div>') + '</div>';
+}
+async function excluirRegra(id){ await api({ acao: 'excluir_regra', id: id }); st.d.regras = st.d.regras.filter(r => r.id !== id); toast('Regra excluída'); render(); }
+
+// ---------- classificar ----------
+function sugerePadrao(l){
+  let s = limpaDesc(l.descricao).toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  s = s.replace(/\(\d+X\)$/, '').replace(/\b\d{6,}\b/g, '').replace(/PARC \d+\/\d+/, '').replace(/\s{2,}/g, ' ').trim();
+  return s.split(' ').slice(0, 4).join(' ').slice(0, 30);
+}
+function abrirLanc(id){
+  const l = st.d.lancamentos.find(x => x.id_tx === id); if (!l) return;
+  const opcoes = l.tipo === 'entrada'
+    ? ['Realiza', 'Salário Daiane', 'CEANE', 'Sinécio', 'Rendimentos', 'Restituição IR', 'Outras entradas']
+    : categorias().map(c => c.nome).filter(n => n !== 'A revisar');
+  folha('<h3>' + esc(limpaDesc(l.descricao)) + '</h3><div class="meta">' + dataBR(l.data) + ' · ' + esc(l.quem) + ', ' + esc(l.conta) + '</div><div style="font-size:22px;font-weight:800;color:var(--teal-deeper)">' + brl(l.valor) + '</div>' +
+    (Number(l.parcelas) > 1 ? '<div class="pequeno">' + l.parcelas + 'x de ' + brl(l.valor_parcela) + '</div>' : '') +
+    (l.classificado_por ? '<div class="pequeno" style="margin-top:4px">Classificado por ' + esc(l.classificado_por) + '</div>' : '') +
+    '<label>Categoria</label><select id="c-cat">' + (l.status === 'a_revisar' ? '<option value="" selected disabled>Escolha a categoria…</option>' : '') + opcoes.map(o => '<option ' + (o === l.categoria && l.status !== 'a_revisar' ? 'selected' : '') + '>' + esc(o) + '</option>').join('') +
+    (l.tipo !== 'entrada' ? '<option value="Transferência nossa">Transferência entre nossas contas (ocultar)</option>' : '') + '</select>' +
+    '<label class="check"><input type="checkbox" id="c-lembrar" checked onchange="document.getElementById(\'c-padrao-box\').style.display=this.checked?\'block\':\'none\'"> Lembrar sempre para lançamentos parecidos</label>' +
+    '<div id="c-padrao-box"><label>Quando a descrição tiver</label><input type="text" id="c-padrao" value="' + esc(sugerePadrao(l)) + '"><div class="pequeno" style="margin-top:4px">Deixe só a parte que se repete (ex.: nome da loja ou da pessoa).</div></div>' +
+    '<div class="acoes"><button class="btn sec" onclick="fecharFolha()">Cancelar</button><button class="btn" onclick="salvarClassificacao(\'' + esc(id) + '\')">Salvar</button></div>');
+}
+async function salvarClassificacao(id){
+  const l = st.d.lancamentos.find(x => x.id_tx === id);
+  const categoria = document.getElementById('c-cat').value;
+  if (!categoria) return toast('Escolha a categoria');
+  const lembrar = document.getElementById('c-lembrar').checked;
+  const padrao = document.getElementById('c-padrao').value.trim();
+  if (lembrar && padrao.length < 3) return toast('O texto da regra precisa de 3 letras ou mais');
+  fecharFolha();
+  await api({ acao: 'classificar', id_tx: id, categoria: categoria, tipo: l.tipo, lembrar: lembrar, padrao: padrao });
+  toast(lembrar ? 'Salvo e regra criada' : 'Classificação salva');
+  await carregar(true);
+}
+
+// ---------- folha (modal) ----------
+function folha(html){ fecharFolha(); const f = document.createElement('div'); f.className = 'fundo'; f.id = 'folha'; f.innerHTML = '<div class="folha">' + html + '</div>'; f.onclick = e => { if (e.target === f) fecharFolha(); }; document.body.appendChild(f); }
+function fecharFolha(){ const f = document.getElementById('folha'); if (f) f.remove(); }
+
+// ---------- login ----------
+function telaLogin(){
+  return '<div class="login"><div class="eyebrow">Finanças da Família</div><h2>Entrar</h2><p>Use o e-mail e a senha que o Nikolas cadastrou para você.</p>' +
+    '<label>E-mail</label><input type="email" id="l-email" autocomplete="username"><label>Senha</label><input type="password" id="l-senha" autocomplete="current-password" onkeydown="if(event.key===\'Enter\')entrar()">' +
+    '<div style="margin-top:16px"><button class="btn" onclick="entrar()">Entrar</button></div><div class="erro" id="l-erro"></div></div>';
+}
+async function entrar(){
+  const email = document.getElementById('l-email').value, senha = document.getElementById('l-senha').value;
+  const r = await fetch(API, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ acao: 'login', email: email, senha: senha }) }).then(r => r.json()).catch(() => ({ ok: false, erro: 'Sem conexão' }));
+  if (!r.ok) { document.getElementById('l-erro').textContent = r.erro || 'Não foi possível entrar'; return; }
+  st.token = r.token; st.nome = r.nome; gravar('fam_token', r.token); gravar('fam_nome', r.nome); carregar();
+}
+
+// ---------- render ----------
+const TITULOS = { revisar: 'Para revisar', orcamento: 'Orçamento', metas: 'Metas e patrimônio', regras: 'Regras' };
+function render(){
+  const app = document.getElementById('app');
+  if (!st.token) { app.innerHTML = telaLogin(); return; }
+  if (!st.d) { app.innerHTML = cabecalho() + '<main><div class="vazio-msg">Carregando…</div></main>' + abas(); return; }
+  const telas = { hoje: telaHoje, calendario: telaCalendario, ondevai: telaOndeVai, apagar: telaAPagar, mais: telaMais, revisar: telaRevisar, orcamento: telaOrcamento, metas: telaMetas, regras: telaRegras };
+  const voltar = TITULOS[st.aba] ? '<div class="mesnav"><button onclick="ir(\'mais\')">‹ Voltar</button><b>' + TITULOS[st.aba] + '</b><span></span></div>' : '';
+  app.innerHTML = cabecalho() + '<main>' + voltar + telas[st.aba]() + '</main>' + abas();
+}
+
+if (st.token) { try { const c = JSON.parse(localStorage.getItem('fam_cache') || 'null'); if (c) st.d = c; } catch(e){} }
+render();
+if (st.token) carregar(true);
+document.addEventListener('visibilitychange', () => { if (!document.hidden && st.token) carregar(true); });
+</script>
+</body>
+</html>
